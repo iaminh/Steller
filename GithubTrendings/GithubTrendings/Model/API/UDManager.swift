@@ -12,14 +12,18 @@ import RxCocoa
 
 class UDManager {
     private let disposeBag = DisposeBag()
-    private let reposKey = "reposKey"
-
     private var repos: [Repo] {
         get {
-            return UserDefaults.standard.array(forKey: "bookmarked") as? [Repo] ?? []
+            guard let data = UserDefaults.standard.data(forKey: "bookmarked") else {
+                return []
+            }
+            return (try? JSONDecoder().decode([Repo].self, from: data)) ?? []
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: "bookmarked")
+            guard let encoded = try? JSONEncoder().encode(newValue) else {
+                return
+            }
+            UserDefaults.standard.setValue(encoded, forKey: "bookmarked")
         }
     }
 
@@ -31,7 +35,7 @@ class UDManager {
                 self?.repos = Array(config)
             }).disposed(by: disposeBag)
 
-        UserDefaults.standard.rx.observe([Repo].self, reposKey)
+        UserDefaults.standard.rx.observe([Repo].self, "bookmarked")
             .compactMap { $0 }
             .map { Set($0) }
             .bind(to: relay)

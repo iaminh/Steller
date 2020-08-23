@@ -19,19 +19,23 @@ struct Repo: Codable, Hashable {
     let owner: User
     let description: String
     let forks: Int
-    let stargazersCount: String
-    let language: String
-    let created: Date
+    let stargazersCount: Int
+    let language: String?
+    let createdAt: Date
+}
+
+struct GithubResponseDTO: Codable {
+    let items: [Repo]
 }
 
 //curl -G https://api.github.com/search/repositories --data-urlencode "q=created:>`date -v-1m '+%Y-%m-%d'`" --data-urlencode "sort=stars" --data-urlencode "order=desc" -H "Accept: application/json"
 // curl -G https://api.github.com/search/repositories --data-urlencode "q=created:>`date -v-1w '+%Y-%m-%d'`" --data-urlencode "sort=stars" --data-urlencode "order=desc" -H "Accept: application/json"
 
 struct GithubDataProvider {
-    enum Interval: CaseIterable {
-        case month
-        case week
+    enum Interval: String, CaseIterable {
         case day
+        case week
+        case month
 
         func toDate() -> Date {
             switch self {
@@ -43,30 +47,44 @@ struct GithubDataProvider {
                 return Calendar.current.date(byAdding: DateComponents(weekOfYear: -1), to: Date())!
             }
         }
+
+        var localizedTitle: String {
+            return ("last_" + self.rawValue).localized
+        }
     }
 
-    private func createRequest(for interval: Interval) -> URLRequest {
+    private func createRequest(for interval: Interval, page: Int, perPage: Int) -> URLRequest {
         let baseURL = URL(string: "https://api.github.com/search/repositories")!
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
 
         components.queryItems = [
-          .init(name: "order", value: "desc"),
-          .init(name: "sort", value: "stars"),
-          .init(name: "created", value: interval.toDate().toDayString()),
+            .init(name: "q", value: "q"),
+            .init(name: "order", value: "desc"),
+            .init(name: "sort", value: "stars"),
+            .init(name: "per_page", value: String(perPage)),
+            .init(name: "page", value: String(page)),
+            .init(name: "created", value: interval.toDate().toDayString()),
         ]
 
         return URLRequest(url: components.url!)
     }
 
-    func loadRepos(for interval: Interval) -> Observable<[Repo]> {
+    func loadRepos(for interval: Interval, page: Int, perPage: Int) -> Observable<[Repo]> {
 
-        let request = createRequest(for: interval)
+        let request = createRequest(for: interval, page: page, perPage: perPage)
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let dateString = try container.decode(String.self)
+            return try Date.parse(string: dateString)
+        }
 
         return URLSession.shared
             .rx
             .data(request: request)
-            .map { try decoder.decode([Repo].self, from: $0) }
+            .map { try decoder.decode(GithubResponseDTO.self, from: $0) }
+            .map { $0.items }
+            .debug()
     }
 }

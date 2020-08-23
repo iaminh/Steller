@@ -45,6 +45,7 @@
 		BA3FE31824F2642B00708E79 /* GithubFavouritesModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31724F2642B00708E79 /* GithubFavouritesModule.swift */; };
 		BA3FE31C24F2645B00708E79 /* GithubDetailModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31B24F2645B00708E79 /* GithubDetailModule.swift */; };
 		BA3FE31E24F2666500708E79 /* GithubFavoritesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31D24F2666500708E79 /* GithubFavoritesVM.swift */; };
+		BA3FE32024F2C31D00708E79 /* GithubDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		BA3FE31724F2642B00708E79 /* GithubFavouritesModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFavouritesModule.swift; sourceTree = "<group>"; };
 		BA3FE31B24F2645B00708E79 /* GithubDetailModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubDetailModule.swift; sourceTree = "<group>"; };
 		BA3FE31D24F2666500708E79 /* GithubFavoritesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFavoritesVM.swift; sourceTree = "<group>"; };
+		BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubDetailVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 			children = (
 				BA3FE2F524F23A6C00708E79 /* GithubDetailVC.swift */,
 				BA3FE2F624F23A6C00708E79 /* GithubDetailVC.xib */,
+				BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				BA3FE2E424F22FDD00708E79 /* Date+Extensions.swift in Sources */,
 				BA3FE2E224F22FD800708E79 /* Logger.swift in Sources */,
 				BA3FE31224F2563200708E79 /* RepoTableViewCell.swift in Sources */,
+				BA3FE32024F2C31D00708E79 /* GithubDetailVM.swift in Sources */,
 				BA3FE2D624F22B3000708E79 /* AlertConfig.swift in Sources */,
 				BA3FE30624F23B3200708E79 /* GithubListVM.swift in Sources */,
 				BA3FE2EE24F230FA00708E79 /* HomeModule.swift in Sources */,

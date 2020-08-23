@@ -1,6 +1,10 @@
 import Foundation
 
 extension Date {
+    enum DateParseError: Error {
+        case invalidDate
+    }
+
     private static let dayTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy HH:mm"
@@ -12,6 +16,12 @@ extension Date {
 		formatter.dateFormat = "HH:mm"
 		return formatter
 	}()
+
+    fileprivate static let serverDateEncoder: DateFormatter = {
+        let encoder = DateFormatter()
+        encoder.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        return encoder
+    }()
 
     private static let yearFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -59,17 +69,17 @@ extension Date {
     }
     
 
-    static func parse(string: String) -> Date? {
+    static func parse(string: String) throws -> Date {
         if let date = dayFormatter.date(from: string) {
             return date
         } else if let date = dayTimeFormatter.date(from: string) {
             return date
-        } else if let date = timeFormatter.date(from: string) {
+        } else if let date = serverDateEncoder.date(from: string) {
             return date
         } else if let date = yearFormatter.date(from: string) {
             return date
         }
         
-        return nil
+        throw DateParseError.invalidDate
     }
 }

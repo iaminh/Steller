@@ -30,7 +30,7 @@
                     </segments>
                 </segmentedControl>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dqa-Cy-rzA">
-                    <rect key="frame" x="0.0" y="94" width="414" height="768"/>
+                    <rect key="frame" x="0.0" y="102" width="414" height="760"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
             </subviews>
@@ -39,7 +39,7 @@
                 <constraint firstItem="vKY-Hh-tjd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="12T-9N-IG3"/>
                 <constraint firstItem="dqa-Cy-rzA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8VQ-3W-3Nl"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dqa-Cy-rzA" secondAttribute="bottom" id="PGa-SK-Mkj"/>
-                <constraint firstItem="dqa-Cy-rzA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="50" id="XUl-ka-8bB"/>
+                <constraint firstItem="dqa-Cy-rzA" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="58" id="XUl-ka-8bB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dqa-Cy-rzA" secondAttribute="trailing" id="ZPm-LN-iWa"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vKY-Hh-tjd" secondAttribute="trailing" id="aCg-g5-7s4"/>
                 <constraint firstItem="vKY-Hh-tjd" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="cKR-z5-dTN"/>
