@@ -1,0 +1,16 @@
+{
+    "add_show_button_title" : "Add TV Show",
+    "home_title": "TV Show App",
+    "show_list_button_title": "Show list of added shows",
+    "show_list_title": "TV Shows",
+    "loading_error": "Loading error",
+    "input_year" : "Input year",
+    "input_movie_title": "Input movie title",
+    "input_sessions": "Input sessions",
+    "add_button_title" : "Add",
+    "bad_year_format": "Bad year format",
+    "bad_sessions_format": "Bad sessions format",
+    "add_success": "Successfully added movie!",
+    "add_fail": "Something happened :(",
+    "movie_sessions": "$0 Sessions"
+}
