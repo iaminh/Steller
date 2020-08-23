@@ -9,8 +9,8 @@
 import Foundation
 import RxSwift
 
-struct Repo: Codable {
-    struct User: Codable {
+struct Repo: Codable, Hashable {
+    struct User: Codable, Hashable {
         let avatarUrl: String
     }
 
@@ -27,8 +27,8 @@ struct Repo: Codable {
 //curl -G https://api.github.com/search/repositories --data-urlencode "q=created:>`date -v-1m '+%Y-%m-%d'`" --data-urlencode "sort=stars" --data-urlencode "order=desc" -H "Accept: application/json"
 // curl -G https://api.github.com/search/repositories --data-urlencode "q=created:>`date -v-1w '+%Y-%m-%d'`" --data-urlencode "sort=stars" --data-urlencode "order=desc" -H "Accept: application/json"
 
-struct GithubAPI {
-    enum Interval {
+struct GithubDataProvider {
+    enum Interval: CaseIterable {
         case month
         case week
         case day

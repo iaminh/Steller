@@ -1,5 +1,5 @@
 //
-//  GithubListVC.swift
+//  GithubFavoritesVC.swift
 //  GithubTrendings
 //
 //  Created by Chu Anh Minh on 8/23/20.
@@ -8,11 +8,13 @@
 
 import UIKit
 
-class GithubListVC: UIViewController {
+class GithubFavoritesVC: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+
 }

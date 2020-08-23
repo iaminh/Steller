@@ -2,12 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "RxFlow",
-        "repositoryURL": "https://github.com/RxSwiftCommunity/RxFlow.git",
+        "package": "RxDataSources",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxDataSources.git",
         "state": {
           "branch": null,
-          "revision": "31557fa4a216387134c93db14130dfc45574b67d",
-          "version": "2.9.0"
+          "revision": "a18cee01c9ee55f04d0c7eb15c77a96c3648c88e",
+          "version": "4.0.1"
         }
       },
       {
@@ -17,6 +17,15 @@
           "branch": null,
           "revision": "002d325b0bdee94e7882e1114af5ff4fe1e96afa",
           "version": "5.1.1"
+        }
+      },
+      {
+        "package": "SDWebImage",
+        "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
+        "state": {
+          "branch": null,
+          "revision": "2f9ef53b99a25bdfba97660c69c42cb54e323b78",
+          "version": "5.8.4"
         }
       },
       {

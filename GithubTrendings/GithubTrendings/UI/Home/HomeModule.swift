@@ -9,29 +9,52 @@
 import UIKit
 
 class HomeModule: Module {
-    private lazy var rootVC: UIViewController = {
-        let output = HomeViewModel.Output()
-        output.showListSubject
-            .receive(on: DispatchQueue.main)
-            .observeNext { [weak self] in self?.showList() }
-            .dispose(in: bag)
+    private lazy var listModule: GithubListModule = {
+        let navigationController =  UINavigationController()
+        navigationController.tabBarItem = UITabBarItem(title: "repositories", image: nil, tag: 1)
+        let router = Router(navigationController: navigationController)
+        let module = GithubListModule(router: router)
 
-        output.addShowSubject
-            .receive(on: DispatchQueue.main)
-            .observeNext { [weak self] in self?.showAddTVShow() }
-            .dispose(in: bag)
-        
-        let vm = HomeViewModel(input: HomeViewModel.Input(), output: output)
-        return HomeViewController(viewModel: vm)
+        addChild(module)
+
+        return module
     }()
-    
+
+    private lazy var favoritesModule: GithubListModule = {
+        let navigationController =  UINavigationController()
+        navigationController.tabBarItem = UITabBarItem(title: "Favourites", image: nil, tag: 1)
+        let router = Router(navigationController: navigationController)
+        let module = GithubListModule(router: router)
+
+        addChild(module)
+
+        return module
+    }()
+
+    private let tabBarController: UITabBarController
+
+    private var tabs: [UIViewController: Module] = [:]
+
     override func toPresentable() -> UIViewController {
-        return router.toPresentable()
+        return tabBarController.toPresentable()
     }
 
-    init(router: Router, dataProvider: DataProvider) {
-        self.dataProvider = dataProvider
+    override init(router: Router) {
+        self.tabBarController = UITabBarController()
         super.init(router: router)
-        router.setRoot(rootVC)
+        setTabs()
+    }
+
+
+    private func setTabs() {
+        tabs = [:]
+
+        let vcs = [listModule, favoritesModule].map { coordinator -> UIViewController in
+            let viewController = coordinator.toPresentable()
+            tabs[viewController] = coordinator
+            return viewController
+        }
+
+        tabBarController.setViewControllers(vcs, animated: false)
     }
 }
