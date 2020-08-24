@@ -17,10 +17,10 @@ class UDManager {
             guard let data = UserDefaults.standard.data(forKey: "bookmarked") else {
                 return []
             }
-            return (try? JSONDecoder().decode([Repo].self, from: data)) ?? []
+            return (try? CustomDecoder().decode([Repo].self, from: data)) ?? []
         }
         set {
-            guard let encoded = try? JSONEncoder().encode(newValue) else {
+            guard let encoded = try? CustomEncoder().encode(newValue) else {
                 return
             }
             UserDefaults.standard.setValue(encoded, forKey: "bookmarked")
@@ -28,7 +28,7 @@ class UDManager {
     }
 
     private(set) lazy var reposRelay: BehaviorRelay<Set<Repo>> = {
-        let relay = BehaviorRelay<Set<Repo>>(value: Set<Repo>())
+        let relay = BehaviorRelay<Set<Repo>>(value: Set(self.repos))
 
         relay
             .subscribe(onNext: { [weak self] config in

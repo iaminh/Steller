@@ -26,7 +26,7 @@ class GithubListVC: Controller<GithubListVM> {
         didSet {
             tableView.rowHeight = UITableView.automaticDimension
             tableView.registerCell(RepoTableViewCell.self)
-            tableView.tableFooterView = UIView()
+            tableView.tableFooterView = indicatorView
             tableView.estimatedRowHeight = 50
         }
     }
@@ -70,28 +70,31 @@ class GithubListVC: Controller<GithubListVM> {
 
         let isNearBottomEdge = tableView.rx
             .contentOffset
-            .map { [weak tableView = tableView] in
+            .map { [weak tableView = tableView] offset -> Bool in
                 guard let tableView = tableView else { return false }
-                return GithubListVC.isNearTheBottomEdge(contentOffset: $0, tableView)
+                return GithubListVC.isNearTheBottomEdge(contentOffset: offset, tableView)
             }
-            .filter { $0 }
+            .distinctUntilChanged()
 
+        isNearBottomEdge
+            .filter { $0 }
+            .map { _ in Void() }
+            .bind(to: vm.in.rx.loadNext)
+            .disposed(by: bag)
 
         isNearBottomEdge
             .distinctUntilChanged()
             .subscribeOn(MainScheduler.instance)
             .bind { [unowned self] isNear in
-                self.tableView?.tableFooterView = isNear ? self.indicatorView : nil
                 if isNear {
                     self.indicatorView.startAnimating()
                 } else {
                     self.indicatorView.stopAnimating()
                 }
             }.disposed(by: bag)
-
     }
 
-    private static let startLoadingOffset: CGFloat = 50.0
+    private static let startLoadingOffset: CGFloat = 20.0
     private static func isNearTheBottomEdge(contentOffset: CGPoint, _ tableView: UITableView) -> Bool {
         return contentOffset.y + tableView.frame.size.height + startLoadingOffset > tableView.contentSize.height
     }

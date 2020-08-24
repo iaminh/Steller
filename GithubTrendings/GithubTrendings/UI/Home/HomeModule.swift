@@ -9,22 +9,24 @@
 import UIKit
 
 class HomeModule: Module {
+    private let udManager = UDManager()
+
     private lazy var listModule: GithubListModule = {
         let navigationController =  UINavigationController()
-        navigationController.tabBarItem = UITabBarItem(title: "repositories", image: nil, tag: 1)
+        navigationController.tabBarItem = UITabBarItem(title: "repositories".localized, image: #imageLiteral(resourceName: "db"), tag: 1)
         let router = Router(navigationController: navigationController)
-        let module = GithubListModule(router: router)
+        let module = GithubListModule(router: router, udManager: udManager)
 
         addChild(module)
 
         return module
     }()
 
-    private lazy var favoritesModule: GithubListModule = {
+    private lazy var favoritesModule: GithubFavoritesModule = {
         let navigationController =  UINavigationController()
-        navigationController.tabBarItem = UITabBarItem(title: "Favourites", image: nil, tag: 1)
+        navigationController.tabBarItem = UITabBarItem(title: "favorites".localized, image: #imageLiteral(resourceName: "bookmark"), tag: 1)
         let router = Router(navigationController: navigationController)
-        let module = GithubListModule(router: router)
+        let module = GithubFavoritesModule(router: router, udManager: udManager)
 
         addChild(module)
 

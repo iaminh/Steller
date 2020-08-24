@@ -7,14 +7,39 @@
 //
 
 import UIKit
-
-class GithubFavoritesVC: UIViewController {
-    @IBOutlet weak var tableView: UITableView!
+import RxSwift
+import RxCocoa
+class GithubFavoritesVC: Controller<GithubFavoritesVM> {
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.rowHeight = UITableView.automaticDimension
+            tableView.registerCell(RepoTableViewCell.self)
+            tableView.tableFooterView = UIView()
+            tableView.estimatedRowHeight = 50
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        title = vm.out.title
     }
 
+    override func bindToVM() {
+        super.bindToVM()
+
+        vm.out
+            .rx
+            .cells
+            .drive(tableView.rx.items(
+                cellIdentifier: RepoTableViewCell.autoReuseIdentifier,
+                cellType: RepoTableViewCell.self)) { _ , model, cell in cell.config(with: model) }
+            .disposed(by: bag)
+
+        tableView.rx
+            .itemSelected
+            .map { $0.row }
+            .bind(to: vm.in.rx.selected)
+            .disposed(by: bag)
+    }
 }

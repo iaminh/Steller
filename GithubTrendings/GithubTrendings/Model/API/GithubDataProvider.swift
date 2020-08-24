@@ -14,14 +14,14 @@ struct Repo: Codable, Hashable {
         let avatarUrl: String
     }
 
-    let id: Int
     let name: String
     let owner: User
-    let description: String
+    let description: String?
     let forks: Int
     let stargazersCount: Int
     let language: String?
     let createdAt: Date
+    let htmlUrl: String
 }
 
 struct GithubResponseDTO: Codable {
@@ -70,20 +70,12 @@ struct GithubDataProvider {
     }
 
     func loadRepos(for interval: Interval, page: Int, perPage: Int) -> Observable<[Repo]> {
-
         let request = createRequest(for: interval, page: page, perPage: perPage)
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        decoder.dateDecodingStrategy = .custom { decoder in
-            let container = try decoder.singleValueContainer()
-            let dateString = try container.decode(String.self)
-            return try Date.parse(string: dateString)
-        }
 
         return URLSession.shared
             .rx
             .data(request: request)
-            .map { try decoder.decode(GithubResponseDTO.self, from: $0) }
+            .map { try CustomDecoder().decode(GithubResponseDTO.self, from: $0) }
             .map { $0.items }
             .debug()
     }

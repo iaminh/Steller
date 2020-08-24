@@ -43,9 +43,9 @@
 		BA3FE31324F2563200708E79 /* RepoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3FE31124F2563200708E79 /* RepoTableViewCell.xib */; };
 		BA3FE31524F2640600708E79 /* GithubListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31424F2640600708E79 /* GithubListModule.swift */; };
 		BA3FE31824F2642B00708E79 /* GithubFavouritesModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31724F2642B00708E79 /* GithubFavouritesModule.swift */; };
-		BA3FE31C24F2645B00708E79 /* GithubDetailModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31B24F2645B00708E79 /* GithubDetailModule.swift */; };
 		BA3FE31E24F2666500708E79 /* GithubFavoritesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31D24F2666500708E79 /* GithubFavoritesVM.swift */; };
 		BA3FE32024F2C31D00708E79 /* GithubDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */; };
+		BA3FE32224F2D40C00708E79 /* JsonDecoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FE32124F2D40C00708E79 /* JsonDecoding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,9 +82,9 @@
 		BA3FE31124F2563200708E79 /* RepoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepoTableViewCell.xib; sourceTree = "<group>"; };
 		BA3FE31424F2640600708E79 /* GithubListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubListModule.swift; sourceTree = "<group>"; };
 		BA3FE31724F2642B00708E79 /* GithubFavouritesModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFavouritesModule.swift; sourceTree = "<group>"; };
-		BA3FE31B24F2645B00708E79 /* GithubDetailModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubDetailModule.swift; sourceTree = "<group>"; };
 		BA3FE31D24F2666500708E79 /* GithubFavoritesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFavoritesVM.swift; sourceTree = "<group>"; };
 		BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubDetailVM.swift; sourceTree = "<group>"; };
+		BA3FE32124F2D40C00708E79 /* JsonDecoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonDecoding.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +227,7 @@
 			children = (
 				BA3FE2F024F2315300708E79 /* GithubDataProvider.swift */,
 				BA3FE30A24F2480200708E79 /* UDManager.swift */,
+				BA3FE32124F2D40C00708E79 /* JsonDecoding.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -252,8 +253,9 @@
 		BA3FE2F424F239B700708E79 /* GithubDetail */ = {
 			isa = PBXGroup;
 			children = (
-				BA3FE31A24F2643E00708E79 /* View */,
-				BA3FE31B24F2645B00708E79 /* GithubDetailModule.swift */,
+				BA3FE2F524F23A6C00708E79 /* GithubDetailVC.swift */,
+				BA3FE2F624F23A6C00708E79 /* GithubDetailVC.xib */,
+				BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */,
 			);
 			path = GithubDetail;
 			sourceTree = "<group>";
@@ -283,16 +285,6 @@
 				BA3FE2F924F23A8200708E79 /* GithubFavoritesVC.swift */,
 				BA3FE2FA24F23A8200708E79 /* GithubFavoritesVC.xib */,
 				BA3FE31D24F2666500708E79 /* GithubFavoritesVM.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		BA3FE31A24F2643E00708E79 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				BA3FE2F524F23A6C00708E79 /* GithubDetailVC.swift */,
-				BA3FE2F624F23A6C00708E79 /* GithubDetailVC.xib */,
-				BA3FE31F24F2C31D00708E79 /* GithubDetailVM.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -391,7 +383,6 @@
 				BA3FE2DD24F22F8400708E79 /* Localization.swift in Sources */,
 				BA3FE2D124F22B3000708E79 /* Presentable.swift in Sources */,
 				BA3FE2FB24F23A8200708E79 /* GithubFavoritesVC.swift in Sources */,
-				BA3FE31C24F2645B00708E79 /* GithubDetailModule.swift in Sources */,
 				BA3FE2D424F22B3000708E79 /* Router.swift in Sources */,
 				BA3FE2A924F224A100708E79 /* AppDelegate.swift in Sources */,
 				BA3FE30324F23AAF00708E79 /* GithubListVC.swift in Sources */,
@@ -405,6 +396,7 @@
 				BA3FE2E424F22FDD00708E79 /* Date+Extensions.swift in Sources */,
 				BA3FE2E224F22FD800708E79 /* Logger.swift in Sources */,
 				BA3FE31224F2563200708E79 /* RepoTableViewCell.swift in Sources */,
+				BA3FE32224F2D40C00708E79 /* JsonDecoding.swift in Sources */,
 				BA3FE32024F2C31D00708E79 /* GithubDetailVM.swift in Sources */,
 				BA3FE2D624F22B3000708E79 /* AlertConfig.swift in Sources */,
 				BA3FE30624F23B3200708E79 /* GithubListVM.swift in Sources */,
