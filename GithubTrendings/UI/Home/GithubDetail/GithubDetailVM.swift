@@ -34,9 +34,9 @@ extension Reactive where Base == Outputs<GithubDetailVM> {
 }
 
 extension Outputs where Base == GithubDetailVM {
-    var title: String { return vm.repo.name }
+    var title: String { return  vm.repo.owner.login + "/" + vm.repo.name }
     var description: String { return vm.repo.description ?? "description_placeholder".localized }
-    var language: String? { return vm.repo.language }
+    var language: String { return vm.repo.language ?? "language_placeholder".localized }
     var stars: String { return "stars_count".localize(with: [String(vm.repo.stargazersCount)]) }
     var forks: String { return "forks_count".localize(with: [String(vm.repo.forks)]) }
     var created: String { return "created_at".localize(with: [vm.repo.createdAt.toDayString()]) }

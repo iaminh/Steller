@@ -63,7 +63,7 @@ class GithubListVM: ViewModel {
 
                 return dto.map { repo in
                     let cell = Cell(
-                        title: repo.name,
+                        title: repo.owner.login + "/" + repo.name,
                         subtitle: repo.description,
                         bookmarked: saved.contains(repo),
                         avatarUrl: repo.owner.avatarUrl

@@ -24,7 +24,7 @@ class GithubFavoritesVM: ViewModel {
 
             return dto.map { repo in
                 let cell = Cell(
-                    title: repo.name,
+                    title: repo.owner.login + "/" + repo.name,
                     subtitle: repo.description,
                     bookmarked: true,
                     avatarUrl: repo.owner.avatarUrl

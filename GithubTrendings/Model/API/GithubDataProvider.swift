@@ -12,6 +12,7 @@ import RxSwift
 struct Repo: Codable, Hashable {
     struct User: Codable, Hashable {
         let avatarUrl: String
+        let login: String
     }
 
     let name: String
