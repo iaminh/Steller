@@ -4,19 +4,20 @@ Project assignment for iOS developer position
 ## Architecture
 **MVVM** with **Coordinators** in combination with reactive programming using RxSwift
 
-Pros:
-    - Scalability, testability, modularity, declarative approach
-    - Future of iOS programming (SwiftUI, Combine is the proof)
-Cons:
-    - Learning curve, overusing leads to hard debugging
+### Pros:
+- Scalability, testability, modularity, declarative approach
+- Future of iOS programming (SwiftUI, Combine)
+### Cons:
+- Learning curve, overusing leads to hard debugging
 
 ## What could be improved
- - Missing proper error handlings
+ - Missing error handlings
  - More user friendly empty states (Empty tableviews, empty texts)
- - UI (asssets weren't provided, only png of the whole screen)
- - Consider using CoreData/Realm instead of UserDefaults
+ - UI (asssets weren't provided, only png of the screens)
+ - Consider using proper persistance CoreData/Realm
  - Unit/UI tests
  - Swiftgen for assets(localization strings, images)
+ - Dependency injection library
  - ipad optimalizations
 
 ## Final words
