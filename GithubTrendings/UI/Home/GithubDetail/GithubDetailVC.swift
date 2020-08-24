@@ -37,8 +37,13 @@ class GithubDetailVC: Controller<GithubDetailVM> {
     }
     @IBOutlet private var openGitButton: UIButton! {
         didSet {
-            openGitButton.setTitle("open_git", for: .normal)
+            openGitButton.setTitle("open_git".localized, for: .normal)
         }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = vm.out.title
     }
 
     override func bindToVM() {

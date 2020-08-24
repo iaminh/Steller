@@ -49,6 +49,5 @@ class GithubListModule: Module {
             .subscribeOn(MainScheduler.instance)
             .subscribe(onNext: onShowDetail)
             .disposed(by: bag)
-
     }
 }
