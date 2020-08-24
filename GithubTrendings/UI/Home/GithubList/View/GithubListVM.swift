@@ -89,18 +89,18 @@ class GithubListVM: ViewModel {
             .bind(to: cells)
             .disposed(by: bag)
 
-        Observable.combineLatest(currentInterval.filter { $0 == .day }, lastDayRepos)
-            .map { $1 }
-            .bind(to: currentRepos)
-            .disposed(by: bag)
-
-        Observable.combineLatest(currentInterval.filter { $0 == .week }, lastWeekRepos)
-            .map { $1 }
-            .bind(to: currentRepos)
-            .disposed(by: bag)
-
-        Observable.combineLatest(currentInterval.filter { $0 == .month }, lastMonthRepos)
-            .map { $1 }
+        Observable.combineLatest(lastDayRepos, lastMonthRepos, lastWeekRepos, currentInterval)
+            .map { day, month, week, interval in
+                switch interval {
+                case .day:
+                    return day
+                case .week:
+                    return week
+                case .month:
+                    return month
+                }
+            }
+            .distinctUntilChanged()
             .bind(to: currentRepos)
             .disposed(by: bag)
     }
