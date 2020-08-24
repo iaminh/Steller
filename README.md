@@ -2,11 +2,11 @@
 Project assignment for iOS developer position
 
 ## Architecture
-**MVVM** with **Coordinators** in combination with reactive programming using RxSwift
+**MVVM** with **Coordinators** in combination with reactive programming using **RxSwift**
 
 ### Pros:
 - Scalability, testability, modularity, declarative approach
-- Future of iOS programming (SwiftUI, Combine)
+- Reactive programming is the future of iOS development (*SwiftUI, Combine*)
 ### Cons:
 - Learning curve, overusing leads to hard debugging
 
