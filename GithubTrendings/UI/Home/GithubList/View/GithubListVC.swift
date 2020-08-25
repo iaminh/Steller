@@ -83,7 +83,6 @@ class GithubListVC: Controller<GithubListVM> {
             .disposed(by: bag)
 
         isNearBottomEdge
-            .distinctUntilChanged()
             .subscribeOn(MainScheduler.instance)
             .bind { [unowned self] isNear in
                 if isNear {
