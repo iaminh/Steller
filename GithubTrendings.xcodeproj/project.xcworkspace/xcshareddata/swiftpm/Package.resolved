@@ -18,15 +18,6 @@
           "revision": "2f9ef53b99a25bdfba97660c69c42cb54e323b78",
           "version": "5.8.4"
         }
-      },
-      {
-        "package": "StanWoodCore",
-        "repositoryURL": "https://github.com/iaminh/Stanwood_Core_iOS",
-        "state": {
-          "branch": null,
-          "revision": "c47d6fce321aff5078fcb4b5190b148cbaa98f45",
-          "version": "1.7.0"
-        }
       }
     ]
   },
