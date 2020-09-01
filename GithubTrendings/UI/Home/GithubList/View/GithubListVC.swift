@@ -9,8 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
-import StanWoodCore
 
 class GithubListVC: Controller<GithubListVM> {
     @IBOutlet private var segmentControl: UISegmentedControl! {
