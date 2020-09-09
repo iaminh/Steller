@@ -17,10 +17,10 @@ class UDManager {
             guard let data = UserDefaults.standard.data(forKey: "bookmarked") else {
                 return []
             }
-            return (try? CustomDecoder().decode([Repo].self, from: data)) ?? []
+            return (try? JSONDecoder().decode([Repo].self, from: data)) ?? []
         }
         set {
-            guard let encoded = try? CustomEncoder().encode(newValue) else {
+            guard let encoded = try? JSONEncoder().encode(newValue) else {
                 return
             }
             UserDefaults.standard.setValue(encoded, forKey: "bookmarked")

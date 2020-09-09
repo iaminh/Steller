@@ -77,7 +77,7 @@ struct GithubDataProvider {
             .rx
             .data(request: request)
             .map { try CustomDecoder().decode(GithubResponseDTO.self, from: $0) }
-            .map { $0.items }
+            .map { $0.items.shuffled() }
             .debug()
     }
 }
