@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+
 class GithubDetailVM: ViewModel {
     fileprivate let repo: Repo
     fileprivate let openGithub = PublishSubject<Void>()
