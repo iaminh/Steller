@@ -27,10 +27,9 @@ class GithubListVM: ViewModel {
 
     private var currentInterval = BehaviorRelay<Interval>(value: .day)
 
-    fileprivate var cells = BehaviorRelay<[Cell]>(value: [])
-    fileprivate var currentRepos = BehaviorRelay<[Repo]>(value: [])
-
-    private var reuseBag = DisposeBag()
+    fileprivate var todayCells = BehaviorRelay<[Cell]>(value: [])
+    fileprivate var lastWeekCells = BehaviorRelay<[Cell]>(value: [])
+    fileprivate var lastMonthCells = BehaviorRelay<[Cell]>(value: [])
 
     init(dataProvider: GithubDataProvider, udManager: UDManager) {
         self.dataProvider = dataProvider
@@ -55,55 +54,50 @@ class GithubListVM: ViewModel {
     }
 
     private func bindOutput() {
-        Observable.combineLatest(currentRepos, udManager.reposRelay)
-            .map { [weak self] dto, saved -> [Cell] in
-                guard let self = self else { return [] }
+        let mapCell: ([Repo], Set<Repo>) -> [Cell] = { [weak self] dto, saved -> [Cell] in
+            guard let self = self else { return [] }
+            return dto.map { repo in
+                let cell = Cell(
+                    title: repo.owner.login + "/" + repo.name,
+                    subtitle: repo.description,
+                    bookmarked: saved.contains(repo),
+                    avatarUrl: repo.owner.avatarUrl
+                )
 
-                self.reuseBag = DisposeBag()
-
-                return dto.map { repo in
-                    let cell = Cell(
-                        title: repo.owner.login + "/" + repo.name,
-                        subtitle: repo.description,
-                        bookmarked: saved.contains(repo),
-                        avatarUrl: repo.owner.avatarUrl
-                    )
-
-                    cell.bookmarkSubject
-                        .withLatestFrom(self.udManager.reposRelay)
-                        .map {
-                            var saved = $0
-                            if saved.contains(repo) {
-                                saved.remove(repo)
-                            } else {
-                                saved.insert(repo)
-                            }
-                            return saved
+                cell.bookmarkSubject
+                    .withLatestFrom(self.udManager.reposRelay)
+                    .map {
+                        var saved = $0
+                        if saved.contains(repo) {
+                            saved.remove(repo)
+                        } else {
+                            saved.insert(repo)
                         }
-                        .bind(to: self.udManager.reposRelay)
-                        .disposed(by: self.reuseBag)
+                        return saved
+                    }
+                    .bind(to: self.udManager.reposRelay)
+                    .disposed(by: cell.bag)
 
-                    return cell
-                }
+                return cell
             }
-            .bind(to: cells)
+        }
+
+        Observable.combineLatest(lastDayRepos, udManager.reposRelay)
+            .map(mapCell)
+            .bind(to: todayCells)
             .disposed(by: bag)
 
-        Observable.combineLatest(lastDayRepos, lastMonthRepos, lastWeekRepos, currentInterval)
-            .map { day, month, week, interval in
-                switch interval {
-                case .day:
-                    return day
-                case .week:
-                    return week
-                case .month:
-                    return month
-                }
-            }
-            .distinctUntilChanged()
-            .bind(to: currentRepos)
+        Observable.combineLatest(lastWeekRepos, udManager.reposRelay)
+            .map(mapCell)
+            .bind(to: lastWeekCells)
+            .disposed(by: bag)
+
+        Observable.combineLatest(lastMonthRepos, udManager.reposRelay)
+            .map(mapCell)
+            .bind(to: lastMonthCells)
             .disposed(by: bag)
     }
+
 
     private func bindInput() {
         segmentSwitched
@@ -139,7 +133,18 @@ class GithubListVM: ViewModel {
             .disposed(by: bag)
 
         selected
-            .withLatestFrom(currentRepos) { $1[$0] }
+            .withLatestFrom(Observable.combineLatest(currentInterval,lastDayRepos, lastMonthRepos, lastWeekRepos)) { ($0, $1) }
+            .map { (index, arg1) -> Repo in
+                let (interval, day, month, week) = arg1
+                switch interval {
+                case .day:
+                    return day[index]
+                case .month:
+                    return month[index]
+                case .week:
+                    return week[index]
+                }
+            }
             .bind(to: showDetail)
             .disposed(by: bag)
     }
@@ -153,6 +158,7 @@ extension GithubListVM {
         let avatarUrl: String
 
         let bookmarkSubject = PublishSubject<Void>()
+        let bag = DisposeBag()
     }
 }
 
@@ -163,7 +169,9 @@ extension Reactive where Base == Inputs<GithubListVM> {
 }
 
 extension Reactive where Base == Outputs<GithubListVM> {
-    var cells: Driver<[GithubListVM.Cell]> { base.vm.cells.asDriver(onErrorJustReturn: []) }
+    var todayCells: Driver<[GithubListVM.Cell]> { base.vm.todayCells.asDriver(onErrorJustReturn: []) }
+    var lastWeekCells: Driver<[GithubListVM.Cell]> { base.vm.lastWeekCells.asDriver(onErrorJustReturn: []) }
+    var lastMonthcells: Driver<[GithubListVM.Cell]> { base.vm.lastMonthCells.asDriver(onErrorJustReturn: []) }
     var showDetail: Observable<Repo> { base.vm.showDetail.asObservable() }
 }
 

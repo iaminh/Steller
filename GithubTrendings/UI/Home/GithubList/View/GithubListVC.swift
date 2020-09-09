@@ -20,23 +20,36 @@ class GithubListVC: Controller<GithubListVM> {
             segmentControl.selectedSegmentIndex = 0
         }
     }
-    @IBOutlet private var tableView: UITableView! {
+    @IBOutlet private var dayTableView: UITableView! {
         didSet {
-            tableView.rowHeight = UITableView.automaticDimension
-            tableView.registerCell(RepoTableViewCell.self)
-            tableView.tableFooterView = indicatorView
-            tableView.estimatedRowHeight = 50
+            configTableView(tableView: dayTableView)
         }
     }
-
+    @IBOutlet private var weekTableView: UITableView! {
+        didSet {
+            configTableView(tableView: weekTableView)
+        }
+    }
+    @IBOutlet private var monthTableView: UITableView! {
+        didSet {
+            configTableView(tableView: monthTableView)
+        }
+    }
     private lazy var indicatorView: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.frame = CGRect(x: 0,
                                  y: 0,
-                                 width: self.tableView.frame.size.width,
+                                 width: self.dayTableView.frame.size.width,
                                  height: 60)
         return indicator
     }()
+
+    private func configTableView(tableView: UITableView) {
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.registerCell(RepoTableViewCell.self)
+        tableView.tableFooterView = indicatorView
+        tableView.estimatedRowHeight = 50
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,14 +62,31 @@ class GithubListVC: Controller<GithubListVM> {
 
         vm.out
             .rx
-            .cells
-            .drive(tableView.rx.items(
+            .todayCells
+            .drive(dayTableView.rx.items(
                 cellIdentifier: RepoTableViewCell.autoReuseIdentifier,
                 cellType: RepoTableViewCell.self)) { _ , model, cell in cell.config(with: model) }
             .disposed(by: bag)
 
-        tableView.rx
-            .itemSelected
+        vm.out
+            .rx
+            .lastWeekCells
+            .drive(weekTableView.rx.items(
+                cellIdentifier: RepoTableViewCell.autoReuseIdentifier,
+                cellType: RepoTableViewCell.self)) { _ , model, cell in cell.config(with: model) }
+            .disposed(by: bag)
+
+        vm.out
+            .rx
+            .lastMonthcells
+            .drive(monthTableView.rx.items(
+                cellIdentifier: RepoTableViewCell.autoReuseIdentifier,
+                cellType: RepoTableViewCell.self)) { _ , model, cell in cell.config(with: model) }
+            .disposed(by: bag)
+
+        Observable.merge(monthTableView.rx.itemSelected.asObservable(),
+                         dayTableView.rx.itemSelected.asObservable(),
+                         weekTableView.rx.itemSelected.asObservable())
             .map { $0.row }
             .bind(to: vm.in.rx.selected)
             .disposed(by: bag)
@@ -66,11 +96,22 @@ class GithubListVC: Controller<GithubListVM> {
             .bind(to: vm.in.rx.segmentSwitched)
             .disposed(by: bag)
 
-        let isNearBottomEdge = tableView.rx
-            .contentOffset
-            .map { [weak tableView = tableView] offset -> Bool in
-                guard let tableView = tableView else { return false }
-                return GithubListVC.isNearTheBottomEdge(contentOffset: offset, tableView)
+        let isNearBottomEdge = Observable.merge(monthTableView.rx.contentOffset.asObservable(),
+                                                dayTableView.rx.contentOffset.asObservable(),
+                                                weekTableView.rx.contentOffset.asObservable())
+            .withLatestFrom(segmentControl.rx.selectedSegmentIndex) { ($0, $1) }
+            .map { [weak self] (offset, index) -> Bool in
+                guard let self = self else { return false }
+                switch index {
+                case 0:
+                    return GithubListVC.isNearTheBottomEdge(contentOffset: offset, self.dayTableView)
+                case 1:
+                    return GithubListVC.isNearTheBottomEdge(contentOffset: offset, self.weekTableView)
+                case 2:
+                    return GithubListVC.isNearTheBottomEdge(contentOffset: offset, self.monthTableView)
+                default:
+                    fatalError("Index out of bounds")
+                }
             }
             .distinctUntilChanged()
 
@@ -89,6 +130,11 @@ class GithubListVC: Controller<GithubListVM> {
                     self.indicatorView.stopAnimating()
                 }
             }.disposed(by: bag)
+
+        segmentControl.rx.selectedSegmentIndex.map { $0 != 0 }.bind(to: dayTableView.rx.isHidden)
+        segmentControl.rx.selectedSegmentIndex.map { $0 != 1 }.bind(to: weekTableView.rx.isHidden)
+        segmentControl.rx.selectedSegmentIndex.map { $0 != 2 }.bind(to: monthTableView.rx.isHidden)
+
     }
 
     private static let startLoadingOffset: CGFloat = 20.0
