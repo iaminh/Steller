@@ -25,11 +25,11 @@ class GithubListVM: ViewModel {
     fileprivate let loadNext = PublishSubject<Void>()
     fileprivate let showDetail = PublishSubject<Repo>()
 
-    private var currentInterval = BehaviorRelay<Interval>(value: .day)
+    private let currentInterval = BehaviorRelay<Interval>(value: .day)
 
-    fileprivate var todayCells = BehaviorRelay<[Cell]>(value: [])
-    fileprivate var lastWeekCells = BehaviorRelay<[Cell]>(value: [])
-    fileprivate var lastMonthCells = BehaviorRelay<[Cell]>(value: [])
+    fileprivate let todayCells = BehaviorRelay<[Cell]>(value: [])
+    fileprivate let lastWeekCells = BehaviorRelay<[Cell]>(value: [])
+    fileprivate let lastMonthCells = BehaviorRelay<[Cell]>(value: [])
 
     init(dataProvider: GithubDataProvider, udManager: UDManager) {
         self.dataProvider = dataProvider
