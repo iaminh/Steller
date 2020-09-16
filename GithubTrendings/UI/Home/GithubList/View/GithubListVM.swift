@@ -44,6 +44,7 @@ class GithubListVM: ViewModel {
         dataProvider.loadRepos(for: .day, page: 0, perPage: 20)
             .bind(to: lastDayRepos)
             .disposed(by: bag)
+
         dataProvider.loadRepos(for: .week, page: 0, perPage: 20)
             .bind(to: lastWeekRepos)
             .disposed(by: bag)

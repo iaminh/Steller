@@ -60,6 +60,12 @@ class GithubListVC: Controller<GithubListVM> {
     override func bindToVM() {
         super.bindToVM()
 
+        bindActions()
+        bindCells()
+        bindSegment()
+    }
+
+    private func bindActions() {
         Observable.merge(monthTableView.rx.itemSelected.asObservable(),
                          dayTableView.rx.itemSelected.asObservable(),
                          weekTableView.rx.itemSelected.asObservable())
@@ -102,7 +108,6 @@ class GithubListVC: Controller<GithubListVM> {
                 }
             }.disposed(by: bag)
     }
-
     private func bindCells() {
         vm.out
             .rx
