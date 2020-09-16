@@ -23,19 +23,23 @@ class GithubListVC: Controller<GithubListVM> {
     @IBOutlet private var dayTableView: UITableView! {
         didSet {
             configTableView(tableView: dayTableView)
+            dayTableView.tableFooterView = dayIndicatorView
         }
     }
     @IBOutlet private var weekTableView: UITableView! {
         didSet {
             configTableView(tableView: weekTableView)
+            weekTableView.tableFooterView = weekIndicatorView
         }
     }
     @IBOutlet private var monthTableView: UITableView! {
         didSet {
             configTableView(tableView: monthTableView)
+            monthTableView.tableFooterView = monthIndicatorView
         }
     }
-    private lazy var indicatorView: UIActivityIndicatorView = {
+
+    private lazy var dayIndicatorView: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.frame = CGRect(x: 0,
                                  y: 0,
@@ -44,10 +48,27 @@ class GithubListVC: Controller<GithubListVM> {
         return indicator
     }()
 
+    private lazy var monthIndicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.frame = CGRect(x: 0,
+                                 y: 0,
+                                 width: self.monthTableView.frame.size.width,
+                                 height: 60)
+        return indicator
+    }()
+
+    private lazy var weekIndicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.frame = CGRect(x: 0,
+                                 y: 0,
+                                 width: self.weekTableView.frame.size.width,
+                                 height: 60)
+        return indicator
+    }()
+
     private func configTableView(tableView: UITableView) {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.registerCell(RepoTableViewCell.self)
-        tableView.tableFooterView = indicatorView
         tableView.estimatedRowHeight = 50
     }
 
@@ -100,11 +121,24 @@ class GithubListVC: Controller<GithubListVM> {
 
         isNearBottomEdge
             .subscribeOn(MainScheduler.instance)
-            .bind { [unowned self] isNear in
+            .withLatestFrom(segmentControl.rx.selectedSegmentIndex) { ($0, $1) }
+            .bind { [unowned self] isNear, index in
+                let indicator: UIActivityIndicatorView
+                switch index {
+                case 0:
+                    indicator = self.dayIndicatorView
+                case 1:
+                    indicator = self.weekIndicatorView
+                case 2:
+                    indicator = self.monthIndicatorView
+                default:
+                    fatalError("Index out of bounds")
+                }
+
                 if isNear {
-                    self.indicatorView.startAnimating()
+                    indicator.startAnimating()
                 } else {
-                    self.indicatorView.stopAnimating()
+                    indicator.stopAnimating()
                 }
             }.disposed(by: bag)
     }
