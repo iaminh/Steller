@@ -9,24 +9,11 @@
 import UIKit
 
 class HomeModule: Module {
-    private let udManager = UDManager()
-
-    private lazy var listModule: GithubListModule = {
+    private lazy var listModule: StoryModule = {
         let navigationController =  UINavigationController()
-        navigationController.tabBarItem = UITabBarItem(title: "repositories".localized, image: #imageLiteral(resourceName: "db"), tag: 1)
+        navigationController.tabBarItem = UITabBarItem(title: "stories".localized, image: #imageLiteral(resourceName: "db"), tag: 1)
         let router = Router(navigationController: navigationController)
-        let module = GithubListModule(router: router, udManager: udManager)
-
-        addChild(module)
-
-        return module
-    }()
-
-    private lazy var favoritesModule: GithubFavoritesModule = {
-        let navigationController =  UINavigationController()
-        navigationController.tabBarItem = UITabBarItem(title: "favorites".localized, image: #imageLiteral(resourceName: "bookmark"), tag: 1)
-        let router = Router(navigationController: navigationController)
-        let module = GithubFavoritesModule(router: router, udManager: udManager)
+        let module = StoryModule(router: router)
 
         addChild(module)
 
@@ -51,7 +38,7 @@ class HomeModule: Module {
     private func setTabs() {
         tabs = [:]
 
-        let vcs = [listModule, favoritesModule].map { coordinator -> UIViewController in
+        let vcs = [listModule].map { coordinator -> UIViewController in
             let viewController = coordinator.toPresentable()
             tabs[viewController] = coordinator
             return viewController

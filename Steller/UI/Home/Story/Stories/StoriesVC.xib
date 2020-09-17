@@ -7,9 +7,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GithubFavoritesVC" customModule="GithubTrendings" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StoriesVC" customModule="Steller" customModuleProvider="target">
             <connections>
-                <outlet property="tableView" destination="TWu-7x-qfm" id="Wd2-HR-No7"/>
+                <outlet property="collectionView" destination="2Wo-pp-SZ4" id="mOE-ri-0LM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -18,17 +18,23 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TWu-7x-qfm">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="2Wo-pp-SZ4">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                </tableView>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dtr-ng-iOH">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TWu-7x-qfm" secondAttribute="bottom" id="7tE-xT-0jd"/>
-                <constraint firstItem="TWu-7x-qfm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JvF-cd-htX"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TWu-7x-qfm" secondAttribute="trailing" id="lSx-bu-Knn"/>
-                <constraint firstItem="TWu-7x-qfm" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="nVJ-9h-lDl"/>
+                <constraint firstItem="2Wo-pp-SZ4" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="7S9-DG-q2Z"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2Wo-pp-SZ4" secondAttribute="trailing" id="CNY-QW-uEo"/>
+                <constraint firstItem="2Wo-pp-SZ4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Jhi-UR-m1g"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="2Wo-pp-SZ4" secondAttribute="bottom" id="dDr-pT-VWH"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="139" y="153"/>
